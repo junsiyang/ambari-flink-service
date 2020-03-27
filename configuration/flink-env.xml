@@ -20,6 +20,16 @@
     <value>flink</value>
     <property-type>USER</property-type>
     <description>User flink daemon runs as</description>
+    <value-attributes>
+      <type>user</type>
+      <overridable>false</overridable>
+      <user-groups>
+        <property>
+          <type>cluster-env</type>
+          <name>user_group</name>
+        </property>
+      </user-groups>
+    </value-attributes>
   </property> 
         
   <property>
@@ -113,7 +123,7 @@ state.backend: jobmanager
 # via keys 'fs.hdfs.hdfsdefault' and 'fs.hdfs.hdfssite'.
 #
 # fs.hdfs.hadoopconf: /path/to/hadoop/conf/
-env.java.home: /usr/jdk64/jdk1.8.0_77/jre
+env.java.home: /usr/lib/jvm/java
 taskmanager.memory.fraction: 0.6
 env.java.opts: -XX:+UseG1GC
   </value>
