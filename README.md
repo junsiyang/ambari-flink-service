@@ -3,6 +3,11 @@ Ambari service for easily installing and managing Flink on HDP clusters.
 Apache Flink is an open source platform for distributed stream and batch data processing
 More details on Flink and how it is being used in the industry today available here: [http://flink-forward.org/?post_type=session](http://flink-forward.org/?post_type=session)
 
+Make a lot of changes to support for HDP 3.1 and Flink 1.10, but still some manual works need to be done:
+1. The paths in the config need to be created before the installation.
+2. User:flink and Group:flink need to be created.(Not sure Ambari can create them or not, manual create can works for me)
+
+
 
 The Ambari service lets you easily install/compile Flink on HDP 2.6.5
 - Features:
