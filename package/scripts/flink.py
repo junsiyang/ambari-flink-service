@@ -90,9 +90,9 @@ class Master(Script):
     import status_params    
     from resource_management.core import sudo
     pid = str(sudo.read_file(status_params.flink_pid_file))
-    if not pid:
+    if pid not in (None, ''):
         Execute('yarn application -kill ' + pid, user=params.flink_user)
-        Execute('rm ' + status_params.flink_pid_file, ignore_failures=True)
+    Execute('rm ' + status_params.flink_pid_file, ignore_failures=True)
  
       
   def start(self, env):
