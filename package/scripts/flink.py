@@ -90,9 +90,9 @@ class Master(Script):
     import status_params    
     from resource_management.core import sudo
     pid = str(sudo.read_file(status_params.flink_pid_file))
-    Execute('yarn application -kill ' + pid, user=params.flink_user)
-
-    Execute('rm ' + status_params.flink_pid_file, ignore_failures=True)
+    if not pid:
+        Execute('yarn application -kill ' + pid, user=params.flink_user)
+        Execute('rm ' + status_params.flink_pid_file, ignore_failures=True)
  
       
   def start(self, env):
@@ -107,9 +107,9 @@ class Master(Script):
     Execute('echo pid file ' + status_params.flink_pid_file)
     cmd_open = subprocess.Popen(["hadoop", "classpath"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     hadoop_classpath = cmd_open.communicate()[0].strip()
-    cmd = format("export HADOOP_CONF_DIR={hadoop_conf_dir}; export HADOOP_CLASSPATH={hadoop_classpath}; {bin_dir}/yarn-session.sh -n {flink_numcontainers} -s {flink_numberoftaskslots} -jm {flink_jobmanager_memory} -tm {flink_container_memory} -qu {flink_queue} -nm {flink_appname} -d")
-    if params.flink_streaming:
-      cmd = cmd + ' -st '
+    cmd = format("export HADOOP_CONF_DIR={hadoop_conf_dir}; export HADOOP_CLASSPATH={hadoop_classpath}; {bin_dir}/yarn-session.sh -d -n {flink_numcontainers} -s {flink_numberoftaskslots} -jm {flink_jobmanager_memory} -tm {flink_container_memory} -qu {flink_queue} -nm {flink_appname}")
+    #if params.flink_streaming:
+    #  cmd = cmd + ' -st '
     Execute (cmd + format(" >> {flink_log_file}"), user=params.flink_user)
     Execute("yarn application -list 2>/dev/null | awk '/" + params.flink_appname + "/ {print $1}' | head -n1 > " + status_params.flink_pid_file, user=params.flink_user)
     #Execute('chown '+params.flink_user+':'+params.flink_group+' ' + status_params.flink_pid_file)
